@@ -3,38 +3,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_internet_connectivity_result/services/internet_checking_service.dart';
 
-class ConnectionCheckerDemo extends StatefulWidget {
-  const ConnectionCheckerDemo({Key? key}) : super(key: key);
+class ConnectionCheckerScreen extends StatefulWidget {
+  const ConnectionCheckerScreen({Key? key}) : super(key: key);
   @override
-  State<ConnectionCheckerDemo> createState() => _ConnectionCheckerDemoState();
+  State<ConnectionCheckerScreen> createState() => _ConnectionCheckerScreenState();
 }
-class _ConnectionCheckerDemoState extends State<ConnectionCheckerDemo> {
+class _ConnectionCheckerScreenState extends State<ConnectionCheckerScreen> {
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
   String string = '';
+
   @override
   void initState() {
     super.initState();
     _networkConnectivity.initialise();
     _networkConnectivity.myStream.listen((source) {
       _source = source;
+
       if (kDebugMode) {
         print('source $_source');
       }
 
       // 1.
       switch (_source.keys.toList()[0]) {
-        case ConnectivityResult.mobile:
-          string =
-          _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
-          break;
-        case ConnectivityResult.wifi:
-          string =
-          _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
-          break;
+        case ConnectivityResult.mobile: string = _source.values.toList()[0] ? 'Yana onlayndasiz' : 'Internet aloqangiz yaxshi emas'; break;
+        case ConnectivityResult.wifi: string = _source.values.toList()[0] ? 'Yana onlayndasiz' : 'Internet aloqangiz yaxshi emas'; break;
         case ConnectivityResult.none:
-        default:
-          string = 'Offline';
+        default: string = "Internet aloqangiz yaxshi emas";
       }
 
       // 2.

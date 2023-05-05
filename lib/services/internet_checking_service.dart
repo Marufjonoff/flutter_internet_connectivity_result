@@ -10,13 +10,14 @@ class NetworkConnectivity {
   final _networkConnectivity = Connectivity();
   final _controller = StreamController.broadcast();
   Stream get myStream => _controller.stream;
+
   // 1.
   void initialise() async {
     ConnectivityResult result = await _networkConnectivity.checkConnectivity();
     _checkStatus(result);
     _networkConnectivity.onConnectivityChanged.listen((result) {
       if (kDebugMode) {
-        print(result);
+        print("Result => $result");
       }
       _checkStatus(result);
     });
@@ -26,12 +27,13 @@ class NetworkConnectivity {
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
-      final result = await InternetAddress.lookup('example.com');
+      final result = await InternetAddress.lookup('10.100.1.6', type: InternetAddressType.IPv4);
       isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {
       isOnline = false;
     }
     _controller.sink.add({result: isOnline});
   }
+
   void disposeStream() => _controller.close();
 }
